@@ -1,0 +1,22 @@
+{
+	"name": "nucleus/onboarding",
+	"description": "",
+	"type": "library",
+	"version": "1.0",
+	"license": "proprietary",
+	"require": {},
+	"autoload": {
+		"psr-4": {
+			"Nucleus\\Onboarding\\": "src/",
+			"Nucleus\\Onboarding\\Database\\Seeders\\": "database/seeders/"
+		}
+	},
+	"minimum-stability": "stable",
+	"extra": {
+		"laravel": {
+			"providers": [
+				"Nucleus\\Onboarding\\Providers\\OnboardingServiceProvider"
+			]
+		}
+	}
+}

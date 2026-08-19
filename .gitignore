@@ -1,0 +1,13 @@
+.env
+.env.local
+.env.production
+.env.testing
+node_modules
+vendor
+storage/app/public
+.DS_Store
+.idea
+.phpunit.result.cache
+.phpunit.cache
+public/storage
+.ddev

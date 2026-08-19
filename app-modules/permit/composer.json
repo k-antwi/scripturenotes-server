@@ -1,0 +1,22 @@
+{
+	"name": "nucleus/permit",
+	"description": "Permit module for managing permissions, roles and user access control",
+	"type": "library",
+	"version": "1.0",
+	"license": "proprietary",
+	"require": {},
+	"autoload": {
+		"psr-4": {
+			"Nucleus\\Permit\\": "src/",
+			"Nucleus\\Permit\\Database\\Seeders\\": "database/seeders/"
+		}
+	},
+	"minimum-stability": "stable",
+	"extra": {
+		"laravel": {
+			"providers": [
+				"Nucleus\\Permit\\Providers\\PermitServiceProvider"
+			]
+		}
+	}
+}

@@ -1,0 +1,24 @@
+{
+	"name": "nucleus/brain",
+	"description": "Brain AI module — multi-provider AI prompt interface with role-based agents.",
+	"type": "library",
+	"version": "1.0",
+	"license": "proprietary",
+	"require": {},
+	"autoload": {
+		"psr-4": {
+			"Nucleus\\Brain\\": "src/",
+			"Nucleus\\Brain\\Tests\\": "tests/",
+			"Nucleus\\Brain\\Database\\Factories\\": "database/factories/",
+			"Nucleus\\Brain\\Database\\Seeders\\": "database/seeders/"
+		}
+	},
+	"minimum-stability": "stable",
+	"extra": {
+		"laravel": {
+			"providers": [
+				"Nucleus\\Brain\\Providers\\BrainServiceProvider"
+			]
+		}
+	}
+}

@@ -1,0 +1,60 @@
+services:
+    laravel.fly:
+        build:
+            context: './docker/8.4'
+            dockerfile: Dockerfile
+            args:
+                WWWGROUP: '${WWWGROUP}'
+        image: 'fly-8.4/app'
+        extra_hosts:
+            - 'host.docker.internal:host-gateway'
+        ports:
+            - '${APP_PORT:-80}:80'
+            - '${VITE_PORT:-5173}:${VITE_PORT:-5173}'
+        environment:
+            WWWUSER: '${WWWUSER}'
+            LARAVEL_FLY: 1
+            XDEBUG_MODE: '${FLY_XDEBUG_MODE:-off}'
+            XDEBUG_CONFIG: '${FLY_XDEBUG_CONFIG:-client_host=host.docker.internal}'
+            IGNITION_LOCAL_SITES_PATH: '${PWD}'
+        volumes:
+            - '.:/var/www/html'
+        networks:
+            - fly
+            - fly-router
+        labels:
+            - traefik.enable=true
+            - 'traefik.http.routers.${APP_NAME:-fly-app}-app.rule=Host(`${FLY_APP_HOST:-fly-app.localhost}`)'
+            - 'traefik.http.routers.${APP_NAME:-fly-app}-app.entrypoints=websecure'
+            - 'traefik.http.routers.${APP_NAME:-fly-app}-app.tls=true'
+            - 'traefik.http.services.${APP_NAME:-fly-app}-app.loadbalancer.server.port=80'
+        # depends_on:
+        #     - couchdb
+    # couchdb:
+    #     image: 'couchdb:latest'
+    #     environment:
+    #         COUCHDB_USER: '${COUCHDB_USERNAME:-fly}'
+    #         COUCHDB_PASSWORD: '${COUCHDB_PASSWORD:-password}'
+    #     volumes:
+    #         - 'fly-couchdb:/opt/couchdb/data'
+    #     ports:
+    #         - '${FORWARD_COUCHDB_PORT:-5984}:5984'
+    #     networks:
+    #         - fly
+    #     healthcheck:
+    #         test:
+    #             - CMD
+    #             - curl
+    #             - '-f'
+    #             - 'http://localhost:5984/'
+    #         retries: 3
+    #         timeout: 5s
+networks:
+    fly:
+        driver: bridge
+    fly-router:
+        external: true
+        name: fly-router
+# volumes:
+#     fly-couchdb:
+#         driver: local

@@ -1,0 +1,22 @@
+{
+	"name": "nucleus/themeengine",
+	"description": "Theme Engine module — AI-powered theme generation interface.",
+	"type": "library",
+	"version": "1.0",
+	"license": "proprietary",
+	"require": {},
+	"autoload": {
+		"psr-4": {
+			"Nucleus\\Themeengine\\": "src/",
+			"Nucleus\\Themeengine\\Tests\\": "tests/"
+		}
+	},
+	"minimum-stability": "stable",
+	"extra": {
+		"laravel": {
+			"providers": [
+				"Nucleus\\Themeengine\\Providers\\ThemeengineServiceProvider"
+			]
+		}
+	}
+}

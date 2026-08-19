@@ -1,0 +1,24 @@
+{
+	"name": "nucleus/annotations",
+	"description": "Annotations module — annotations, bookmarks, notebooks, custom notes, and study sessions.",
+	"type": "library",
+	"version": "1.0",
+	"license": "proprietary",
+	"require": {},
+	"autoload": {
+		"psr-4": {
+			"Nucleus\\Annotations\\": "src/",
+			"Nucleus\\Annotations\\Tests\\": "tests/",
+			"Nucleus\\Annotations\\Database\\Factories\\": "database/factories/",
+			"Nucleus\\Annotations\\Database\\Seeders\\": "database/seeders/"
+		}
+	},
+	"minimum-stability": "stable",
+	"extra": {
+		"laravel": {
+			"providers": [
+				"Nucleus\\Annotations\\Providers\\AnnotationsServiceProvider"
+			]
+		}
+	}
+}

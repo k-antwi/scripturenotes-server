@@ -1,0 +1,24 @@
+{
+	"name": "nucleus/providers",
+	"description": "Providers module — second-role abstraction (consumer + provider) with pluggable credential verification.",
+	"type": "library",
+	"version": "1.0",
+	"license": "proprietary",
+	"require": {},
+	"autoload": {
+		"psr-4": {
+			"Nucleus\\Providers\\": "src/",
+			"Nucleus\\Providers\\Tests\\": "tests/",
+			"Nucleus\\Providers\\Database\\Factories\\": "database/factories/",
+			"Nucleus\\Providers\\Database\\Seeders\\": "database/seeders/"
+		}
+	},
+	"minimum-stability": "stable",
+	"extra": {
+		"laravel": {
+			"providers": [
+				"Nucleus\\Providers\\Providers\\ProvidersServiceProvider"
+			]
+		}
+	}
+}

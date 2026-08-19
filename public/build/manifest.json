@@ -1,0 +1,23 @@
+{
+  "resources/css/filament/admin/theme.css": {
+    "file": "assets/theme-BnoHXIPr.css",
+    "src": "resources/css/filament/admin/theme.css",
+    "isEntry": true
+  },
+  "resources/css/filament/financial-advisor/theme.css": {
+    "file": "assets/theme-BxSzAKRr.css",
+    "src": "resources/css/filament/financial-advisor/theme.css",
+    "isEntry": true
+  },
+  "resources/themes/anchor/assets/css/app.css": {
+    "file": "assets/app-8hlvQ6c9.css",
+    "src": "resources/themes/anchor/assets/css/app.css",
+    "isEntry": true
+  },
+  "resources/themes/anchor/assets/js/app.js": {
+    "file": "assets/app-CaUPGaqM.js",
+    "name": "app",
+    "src": "resources/themes/anchor/assets/js/app.js",
+    "isEntry": true
+  }
+}

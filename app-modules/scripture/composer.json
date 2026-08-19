@@ -1,0 +1,26 @@
+{
+	"name": "nucleus/scripture",
+	"description": "Scripture module — Bible API cache proxy and passage management.",
+	"type": "library",
+	"version": "1.0",
+	"license": "proprietary",
+	"require": {
+		"guzzlehttp/guzzle": "^7.0"
+	},
+	"autoload": {
+		"psr-4": {
+			"Nucleus\\Scripture\\": "src/",
+			"Nucleus\\Scripture\\Tests\\": "tests/",
+			"Nucleus\\Scripture\\Database\\Factories\\": "database/factories/",
+			"Nucleus\\Scripture\\Database\\Seeders\\": "database/seeders/"
+		}
+	},
+	"minimum-stability": "stable",
+	"extra": {
+		"laravel": {
+			"providers": [
+				"Nucleus\\Scripture\\Providers\\ScriptureServiceProvider"
+			]
+		}
+	}
+}

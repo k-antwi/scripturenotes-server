@@ -1,0 +1,19 @@
+<?php
+
+namespace Nucleus\Permit\Filament\Resources\PermitResource\Pages;
+
+use Filament\Actions\DeleteAction;
+use Filament\Resources\Pages\EditRecord;
+use Nucleus\Permit\Filament\Resources\PermitResource;
+
+class EditPermit extends EditRecord
+{
+    protected static string $resource = PermitResource::class;
+
+    protected function getHeaderActions(): array
+    {
+        return [
+            DeleteAction::make(),
+        ];
+    }
+}
