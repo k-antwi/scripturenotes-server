@@ -5,6 +5,7 @@ use Nucleus\Annotations\Http\Controllers\AnnotationController;
 use Nucleus\Annotations\Http\Controllers\BookmarkController;
 use Nucleus\Annotations\Http\Controllers\CustomNoteController;
 use Nucleus\Annotations\Http\Controllers\NotebookController;
+use Nucleus\Annotations\Http\Controllers\ShareController;
 use Nucleus\Annotations\Http\Controllers\StudySessionController;
 
 /*
@@ -33,6 +34,13 @@ Route::middleware(['auth:api,sanctum'])->prefix('api')->group(function () {
 
     Route::delete('annotations/{id}', [AnnotationController::class, 'destroy'])
         ->name('annotations.destroy');
+
+    // ── §11.2 Annotation Sharing (authenticated) ─────────────────────────────
+    Route::post('annotations/{id}/share', [ShareController::class, 'share'])
+        ->name('annotations.share');
+
+    Route::delete('annotations/{id}/share', [ShareController::class, 'revoke'])
+        ->name('annotations.share.revoke');
 
     // ── §7.4 Bookmarks ──────────────────────────────────────────────────────
     Route::get('bookmarks', [BookmarkController::class, 'index'])
@@ -89,3 +97,7 @@ Route::middleware(['auth:api,sanctum'])->prefix('api')->group(function () {
     Route::patch('study-sessions/{id}', [StudySessionController::class, 'update'])
         ->name('study-sessions.update');
 });
+
+// ── §11.2 Public shared annotation link (no auth required) ──────────────────
+Route::get('api/shared/{token}', [ShareController::class, 'show'])
+    ->name('annotations.shared.show');
