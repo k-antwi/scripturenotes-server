@@ -63,9 +63,17 @@ class NotebookController extends Controller
 
     public function destroy(Request $request, int $id): JsonResponse
     {
-        Notebook::where('user_id', $request->user()->id)->findOrFail($id)->delete();
+        $notebook = Notebook::where('user_id', $request->user()->id)->findOrFail($id);
 
-        return response()->json(['deleted' => true]);
+        if ($notebook->is_default) {
+            return response()->json(['message' => 'The Untitled Notebook cannot be deleted.'], 403);
+        }
+
+        // Detach notes from this notebook (notes themselves are NOT deleted)
+        $notebook->notes()->detach();
+        $notebook->delete();
+
+        return response()->json(null, 204);
     }
 
     public function addAnnotation(Request $request, int $id, int $annotationId): JsonResponse

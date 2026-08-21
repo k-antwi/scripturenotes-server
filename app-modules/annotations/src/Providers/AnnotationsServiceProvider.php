@@ -4,6 +4,7 @@ namespace Nucleus\Annotations\Providers;
 
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
+use Nucleus\Annotations\Observers\UserObserver;
 
 class AnnotationsServiceProvider extends ServiceProvider
 {
@@ -15,6 +16,10 @@ class AnnotationsServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->loadMigrationsFrom(__DIR__ . '/../../database/migrations');
+
+        // Auto-create the Untitled Notebook when a new user registers
+        $userModel = config('auth.providers.users.model');
+        $userModel::observe(UserObserver::class);
 
         /** @var Router $router */
         $router = $this->app->make(Router::class);

@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Nucleus\Annotations\Http\Controllers\AnnotationController;
 use Nucleus\Annotations\Http\Controllers\BookmarkController;
 use Nucleus\Annotations\Http\Controllers\CustomNoteController;
+use Nucleus\Annotations\Http\Controllers\NoteController;
 use Nucleus\Annotations\Http\Controllers\NotebookController;
 use Nucleus\Annotations\Http\Controllers\ShareController;
 use Nucleus\Annotations\Http\Controllers\StudySessionController;
@@ -73,6 +74,33 @@ Route::middleware(['auth:api,sanctum'])->prefix('api')->group(function () {
 
     Route::delete('notebooks/{id}/annotations/{annotationId}', [NotebookController::class, 'removeAnnotation'])
         ->name('notebooks.annotations.detach');
+
+    // ── Notes (user-authored scripture notes, PRD §5.3 / §6.5) ──────────────
+    // Sync and passage routes must be before {id} to avoid route conflicts.
+    Route::post('notes/sync', [NoteController::class, 'sync'])
+        ->name('notes.sync');
+
+    Route::get('notes/passage/{book}/{chapter}', [NoteController::class, 'forPassage'])
+        ->name('notes.passage');
+
+    Route::get('notes', [NoteController::class, 'index'])
+        ->name('notes.index');
+
+    Route::post('notes', [NoteController::class, 'store'])
+        ->name('notes.store');
+
+    Route::get('notes/{id}', [NoteController::class, 'show'])
+        ->name('notes.show');
+
+    Route::put('notes/{id}', [NoteController::class, 'update'])
+        ->name('notes.update');
+
+    Route::delete('notes/{id}', [NoteController::class, 'destroy'])
+        ->name('notes.destroy');
+
+    // Notebooks — add notes sub-resource
+    Route::get('notebooks/{id}/notes', [NoteController::class, 'notebookNotes'])
+        ->name('notebooks.notes.index');
 
     // ── Custom Notes (user commentary) ───────────────────────────────────────
     Route::get('custom-notes', [CustomNoteController::class, 'index'])
