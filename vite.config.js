@@ -4,22 +4,26 @@ import fs from 'fs';
 import path from 'path';
 import tailwindcss from "@tailwindcss/vite";
 
-const themeFilePath = path.resolve(__dirname, 'theme.json');
-const activeTheme = fs.existsSync(themeFilePath) ? JSON.parse(fs.readFileSync(themeFilePath, 'utf8')).name : 'anchor';
-console.log(`Active theme: ${activeTheme}`);
+const themesDir = path.resolve(__dirname, 'resources/themes');
+const themes = fs.readdirSync(themesDir).filter(d => fs.statSync(path.join(themesDir, d)).isDirectory());
+console.log(`Building themes: ${themes.join(', ')}`);
+
+const themeInputs = themes.flatMap(theme => [
+    `resources/themes/${theme}/assets/css/app.css`,
+    `resources/themes/${theme}/assets/js/app.js`,
+]);
 
 export default defineConfig({
     plugins: [
         tailwindcss(),
         laravel({
             input: [
-                `resources/themes/${activeTheme}/assets/css/app.css`,
-                `resources/themes/${activeTheme}/assets/js/app.js`,
+                ...themeInputs,
                 'resources/css/filament/admin/theme.css',
                 'resources/css/filament/financial-advisor/theme.css',
             ],
             refresh: [
-                `resources/themes/${activeTheme}/**/*`,
+                'resources/themes/**/*',
             ],
         }),
     ],
