@@ -17,7 +17,7 @@ use Nucleus\Annotations\Http\Controllers\StudySessionController;
 | Capacitor (native) builds send a Bearer token (PRD §3 Authentication).
 */
 
-Route::middleware(['auth:api,sanctum'])->prefix('api')->group(function () {
+Route::middleware(['auth:api'])->prefix('api')->group(function () {
 
     // ── §7.2 Annotations ────────────────────────────────────────────────────
     // Sync route must be registered BEFORE the {id} route to avoid conflict.

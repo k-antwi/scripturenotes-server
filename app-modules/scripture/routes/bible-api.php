@@ -13,7 +13,7 @@ use Nucleus\Scripture\Http\Controllers\BibleController;
 */
 
 Route::prefix('api/bible')
-    ->middleware(['auth:sanctum', 'throttle:120,1'])
+    ->middleware(['auth:api', 'throttle:120,1'])
     ->group(function () {
 
         // GET /api/bible/passage?ref=John+3:16&version=NIV
