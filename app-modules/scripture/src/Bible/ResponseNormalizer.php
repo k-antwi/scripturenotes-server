@@ -70,11 +70,13 @@ class ResponseNormalizer
         $data = $raw['data'] ?? $raw;
         $verses = $this->extractApiBibleVerses($data, $data['bookId'] ?? '', (int) ($data['chapterNum'] ?? 0));
 
+        $content = $data['content'] ?? null;
+
         return $this->buildEnvelope(
             reference: $data['reference'] ?? '',
             version: $version,
             verses: $verses,
-            html: $data['content'] ?? null,
+            html: is_string($content) ? $content : null,
             copyright: $data['copyright'] ?? null,
             provider: $providerName,
             cached: $cached,
