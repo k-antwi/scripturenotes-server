@@ -68,7 +68,7 @@ class ResponseNormalizer
     public function fromApiBible(array $raw, string $version, string $providerName, bool $cached = false): array
     {
         $data = $raw['data'] ?? $raw;
-        $verses = $this->extractApiBibleVerses($data, $data['bookId'] ?? '', (int) ($data['chapterNum'] ?? 0));
+        $verses = $this->extractApiBibleVerses($data, $data['bookId'] ?? '', (int) ($data['number'] ?? $data['chapterNum'] ?? 0));
 
         $content = $data['content'] ?? null;
 
@@ -272,68 +272,69 @@ class ResponseNormalizer
     private function extractApiBibleVerses(array $data, string $bookAbbr, int $chapterNum): array
     {
         $verses = [];
-        $seen   = [];
 
         foreach ($data['content'] ?? [] as $block) {
-            $this->walkApiBibleBlock($block, $bookAbbr, $chapterNum, $verses, $seen);
+            $this->collectVerseSpans($block, $bookAbbr, $chapterNum, $verses);
         }
+
+        ksort($verses);
 
         return array_values($verses);
     }
 
-    private function walkApiBibleBlock(array $block, string $bookAbbr, int $chapterNum, array &$verses, array &$seen): void
+    private function collectVerseSpans(array $block, string $bookAbbr, int $chapterNum, array &$verses): void
     {
-        if (($block['type'] ?? '') === 'verse') {
-            $this->extractApiBibleVerse($block, $bookAbbr, $chapterNum, $verses, $seen);
+        if (($block['name'] ?? '') === 'verse-span') {
+            $verseId  = $block['attrs']['verseId'] ?? '';
+            $parts    = explode('.', $verseId);
+            $verseNum = (int) end($parts);
+
+            if ($verseNum > 0) {
+                $text = $this->textFromVerseSpan($block['items'] ?? []);
+
+                if (isset($verses[$verseNum])) {
+                    if ($text !== '') {
+                        $verses[$verseNum]['text'] .= ($verses[$verseNum]['text'] !== '' ? ' ' : '') . $text;
+                    }
+                } else {
+                    $verses[$verseNum] = [
+                        'book'    => $bookAbbr,
+                        'chapter' => $chapterNum,
+                        'verse'   => $verseNum,
+                        'verseId' => $this->encodeVerseId($bookAbbr, $chapterNum, $verseNum),
+                        'text'    => $text,
+                    ];
+                }
+            }
 
             return;
         }
 
         foreach ($block['items'] ?? [] as $item) {
-            $this->walkApiBibleBlock($item, $bookAbbr, $chapterNum, $verses, $seen);
+            if (is_array($item)) {
+                $this->collectVerseSpans($item, $bookAbbr, $chapterNum, $verses);
+            }
         }
     }
 
-    private function extractApiBibleVerse(array $verseNode, string $bookAbbr, int $chapterNum, array &$verses, array &$seen): void
-    {
-        $verseNum = (int) ($verseNode['attrs']['number'] ?? $verseNode['number'] ?? 0);
-        if ($verseNum === 0) {
-            return;
-        }
-
-        $text = $this->concatText($verseNode['items'] ?? []);
-
-        if (isset($seen[$verseNum])) {
-            // Merge continuation text for the same verse number
-            $verses[$seen[$verseNum]]['text'] .= ' ' . trim($text);
-
-            return;
-        }
-
-        $seen[$verseNum] = count($verses);
-        $verses[]        = [
-            'book'    => $bookAbbr,
-            'chapter' => $chapterNum,
-            'verse'   => $verseNum,
-            'verseId' => $this->encodeVerseId($bookAbbr, $chapterNum, $verseNum),
-            'text'    => trim($text),
-        ];
-    }
-
-    private function concatText(array $items): string
+    private function textFromVerseSpan(array $items): string
     {
         $text = '';
 
         foreach ($items as $item) {
-            $type = $item['type'] ?? '';
-
-            if (in_array($type, ['text', 'tag'], true)) {
+            if (!is_array($item)) {
+                continue;
+            }
+            if (($item['name'] ?? '') === 'verse') {
+                continue; // verse number marker only — skip
+            }
+            if (($item['type'] ?? '') === 'text') {
                 $text .= $item['text'] ?? '';
-            } elseif (isset($item['items']) && is_array($item['items'])) {
-                $text .= $this->concatText($item['items']);
+            } elseif (isset($item['items'])) {
+                $text .= $this->textFromVerseSpan($item['items']);
             }
         }
 
-        return $text;
+        return trim($text);
     }
 }
