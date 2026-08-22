@@ -10,7 +10,7 @@ return [
     */
     'api_bible' => [
         'key' => env('API_BIBLE_KEY', ''),
-        'base_url' => env('API_BIBLE_BASE_URL', 'https://api.scripture.api.bible/v1),
+        'base_url' => env('API_BIBLE_BASE_URL', 'https://api.scripture.api.bible/v1'),
     ],
 
     /*
