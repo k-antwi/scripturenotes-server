@@ -1,0 +1,61 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    :root {
+        --color-parchment: 250 247 242;
+        --color-parchment-dark: 240 234 225;
+        --color-olive: 75 103 65;
+        --color-olive-dark: 55 78 47;
+        --color-amber-gold: 201 146 47;
+        --color-scripture-brown: 44 24 16;
+        --color-scripture-muted: 107 87 68;
+    }
+
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+        @apply antialiased;
+        background-color: rgb(var(--color-parchment));
+        color: rgb(var(--color-scripture-brown));
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+        font-family: Georgia, 'Times New Roman', serif;
+    }
+}
+
+@layer components {
+    .scripture-gradient {
+        background: linear-gradient(135deg, rgb(var(--color-parchment)), rgb(var(--color-parchment-dark)));
+    }
+
+    .olive-gradient {
+        background: linear-gradient(135deg, #4B6741, #3A5432);
+    }
+
+    .gold-accent {
+        color: rgb(var(--color-amber-gold));
+    }
+
+    .parchment-card {
+        @apply bg-white/80 border border-stone-200 rounded-2xl backdrop-blur-sm;
+        box-shadow: 0 2px 20px rgba(44, 24, 16, 0.05);
+    }
+
+    .scrollbar-hidden::-webkit-scrollbar {
+        display: none;
+    }
+
+    .scrollbar-hidden {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+
+    [x-cloak] {
+        display: none !important;
+    }
+}
