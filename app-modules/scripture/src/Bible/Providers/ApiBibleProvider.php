@@ -38,11 +38,14 @@ class ApiBibleProvider implements BibleProviderInterface
 
     public function __construct()
     {
+        $api_key = config('scripture.api_bible.key');
+        $base_url = config('scripture.api_bible.base_url');
+        
         $this->client = new Client([
-            'base_uri' => self::BASE_URL,
+            'base_uri' => $base_url,
             'timeout'  => 10,
             'headers'  => [
-                'api-key' => config('scripture.api_bible_key', ''),
+                'api-key' => $api_key,
                 'Accept'  => 'application/json',
             ],
         ]);

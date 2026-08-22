@@ -8,7 +8,10 @@ return [
     | Licensed translations: NIV, ESV, NASB, NLT, NKJV, BSB …
     | Keep server-side only — never expose to the frontend.
     */
-    'api_bible_key' => env('API_BIBLE_KEY', ''),
+    'api_bible' => [
+        'key' => env('API_BIBLE_KEY', ''),
+        'base_url' => env('API_BIBLE_BASE_URL', 'https://api.scripture.api.bible/v1),
+    ],
 
     /*
     |--------------------------------------------------------------------------
