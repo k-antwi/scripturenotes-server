@@ -26,11 +26,12 @@ return [
     | 'null' covers Capacitor native WebViews (file:// / capacitor:// origins).
     */
     'allowed_origins' => [
-        'http://localhost:5173',   // Vite dev server
-        'http://localhost:58128',  // Laravel dev server (same-origin requests)
-        'capacitor://localhost',   // Capacitor iOS
-        'http://localhost',        // Capacitor Android
-        'null',                    // file:// origin (older Capacitor / Electron)
+        'http://localhost:5173',           // Vite dev server
+        'http://localhost:58128',          // Laravel dev server (same-origin requests)
+        'capacitor://localhost',           // Capacitor iOS
+        'http://localhost',                // Capacitor Android
+        'null',                            // file:// origin (older Capacitor / Electron)
+        'https://sn-app.churchpanel.org',  // Production frontend
     ],
 
     'allowed_origins_patterns' => [],
